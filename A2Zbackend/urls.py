@@ -9,7 +9,7 @@ urlpatterns = [
     # path('create-service/', views.create_service),
         path('api/tickets/createticket', views.create_ticket),
         path('api/tickets', views.get_tickets),
-    
+     
     path('create-dispatch-entry/', views.create_dispatch_entry),
     
     #path('nearby-drivers/', nearby_drivers_api, name='nearby-drivers'),
