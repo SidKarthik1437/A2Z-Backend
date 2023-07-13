@@ -15,6 +15,22 @@ from rest_framework.permissions import IsAuthenticated
 # from django.contrib.gis.measure import D
 
 
+@api_view(['GET'])
+def get_tickets(request):
+    tickets = Ticket.objects.all().order_by('-created_at')
+    serializer = TicketSerializer(tickets, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def create_ticket(request):
+    serializer = TicketSerializer(data=request.data)
+    # print(request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
+
 
 @api_view(['POST'])
 def create_dispatch_entry(request):

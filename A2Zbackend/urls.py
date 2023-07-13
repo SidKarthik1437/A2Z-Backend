@@ -7,6 +7,8 @@ app_name = 'A2Zbackend'
 urlpatterns = [
     # path('create-customers/', views.create_customer),
     # path('create-service/', views.create_service),
+        path('api/tickets/createticket', views.create_ticket),
+        path('api/tickets', views.get_tickets),
     
     path('create-dispatch-entry/', views.create_dispatch_entry),
     

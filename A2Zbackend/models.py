@@ -1,5 +1,18 @@
 from django.db import models
 
+class Ticket(models.Model):
+    name=models.CharField(max_length=100)
+    contactNumber=models.CharField(max_length=10)
+    email=models.EmailField()
+    vehicleMake=models.CharField(max_length=20)
+    vehicleRegNumber=models.CharField(max_length=10)
+    breakdownIssue=models.TextField()
+    location=models.TextField()
+    comments=models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+            return self.name
+
 class Accounts(models.Model):
     account_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
