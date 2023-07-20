@@ -2,9 +2,7 @@ accounts/
 accounts/<int:account_id>/
 GET, POST:
 {
-    account_id,
     name,
-    create_date,
     address,
     email,
     phone,
@@ -16,7 +14,6 @@ customers/
 customers/<int:customer_id>/
 GET, POST:
 {
-    customer_id,
     name,
     email,
     phone,
@@ -27,9 +24,7 @@ dispatch-entries/
 dispatch-entries/<int:entry_id>/
 GET, POST,PUT,DELETE:
 {
-    dispatch_entry_id,
     case,
-    create_date,
     partner_caseid,
     partner_service_id,
     account_id,
@@ -57,8 +52,6 @@ driver-locations/
 driver-locations/<int:location_id>/
 GET, POST:
 {
-    driverLocation_id
-    create_date
     company_id
     latitude
     longitude
@@ -69,7 +62,6 @@ rate-items/
 rate-items/<int:rate_item_id>/
 GET, POST:
 {
-    rate_item_id
     name
     account_id
     account_name
@@ -91,11 +83,7 @@ vehicles/<int:vehicle_id>/
 GET, POST:
 {
     vehicle_id
-    make_id
     make
-    model_id
-    model
-    year
     vehicle_class
     vehicle_type
 }
