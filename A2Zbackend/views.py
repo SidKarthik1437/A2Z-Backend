@@ -7,7 +7,7 @@ from rest_framework import status
 from .serializers import *
 import googlemaps
 from django.conf import settings
-
+from math import radians, sin, cos, sqrt, atan2
 
 
 @api_view(['POST'])
@@ -911,22 +911,39 @@ def vehicles_detail(request, vehicle_id):
         vehicle.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+def haversine(lat1, lon1, lat2, lon2):
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    radius = 6371
+
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    distance = radius * c
+
+    return distance
+
 @api_view(['GET'])
 def nearby_drivers(request):
     pickup_latitude = request.GET.get('pickup_latitude')
     pickup_longitude = request.GET.get('pickup_longitude')
     distance = 2
-    if pickup_latitude and pickup_longitude:
-        gmaps = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
-        
-        range_value = float(distance) / (111 * 1000)
-        
-        nearby_drivers = DriverLocation.objects.filter(
-            latitude__range=(float(pickup_latitude)-range_value, float(pickup_latitude)+0.045),
-            longitude__range=(float(pickup_longitude)-range_value, float(pickup_longitude)+0.045)
-        )
 
-        serializer = DriverLocationSerializer(nearby_drivers, many=True)
+    if pickup_latitude and pickup_longitude and distance:
+        gmaps = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
+
+        nearby_drivers = []
+        for driver in Company.objects.all():
+            driver_latitude = driver.latitude
+            driver_longitude = driver.longitude
+
+            dist = haversine(float(pickup_latitude), float(pickup_longitude), driver_latitude, driver_longitude)
+
+            if dist <= float(distance):
+                nearby_drivers.append(driver)
+
+        serializer = CompanySerializer(nearby_drivers, many=True)
         return Response(serializer.data)
 
     return Response([])
