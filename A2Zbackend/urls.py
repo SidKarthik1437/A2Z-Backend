@@ -45,11 +45,8 @@ urlpatterns = [
     path('entry-status-records/', views.dispatch_entry_status_records_list),
     path('entry-status-records/<int:record_id>/', views.dispatch_entry_status_records_detail),
 
-    path('dispatch-entries/', get_all_dispatch_entries, name='get_all_dispatch_entries'),
-    path('dispatch-entries/', create_dispatch_entry, name='create_dispatch_entry'),
-    path('dispatch-entries/<int:entry_id>/', get_dispatch_entry, name='get_dispatch_entry'),
-    path('dispatch-entries/<int:entry_id>/', update_dispatch_entry, name='update_dispatch_entry'),
-    path('dispatch-entries/<int:entry_id>/', delete_dispatch_entry, name='delete_dispatch_entry'),
+    path('dispatch_entries/', dispatch_entry_list, name='dispatch-entry-list'),
+    path('dispatch_entries/<int:entry_id>/', dispatch_entry_detail, name='dispatch-entry-detail'),
 
     path('driver-locations/', views.driver_location_list),
     path('driver-locations/<int:location_id>/', views.driver_location_detail),

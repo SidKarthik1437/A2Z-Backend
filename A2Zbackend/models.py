@@ -26,7 +26,7 @@ class AccountTypes(models.Model):
 
 class Cases(models.Model):
     case_id = models.AutoField(primary_key=True)
-    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE)
+    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE, null=True)
     csr_id = models.ForeignKey('SystemUser',on_delete=models.CASCADE)
 
 class Company(models.Model):
@@ -81,35 +81,35 @@ class CustomerFeedback(models.Model):
 
 class DispatchEntry(models.Model):
     dispatch_entry_id = models.AutoField(primary_key=True)
-    case = models.ForeignKey('Cases', on_delete=models.CASCADE)
+    case_id = models.ForeignKey('Cases', on_delete=models.CASCADE, null=True)
     create_date = models.DateField(auto_now_add=True)
     partner_caseid = models.IntegerField()
     partner_service_id = models.IntegerField()
     account_id = models.ForeignKey('Accounts', on_delete=models.CASCADE)
-    source = models.CharField(max_length=100)
+    # source = models.CharField(max_length=100)
     service_type_id = models.ForeignKey('ServiceTypes', on_delete=models.CASCADE)
     reason_id = models.ForeignKey('Reasons', on_delete=models.CASCADE)
     customer_id = models.ForeignKey('Customers', on_delete=models.CASCADE)
-    asset_id = models.ForeignKey('DispatchEntryAssets', on_delete=models.CASCADE)
+    asset_id = models.ForeignKey('DispatchEntryAssets', on_delete=models.CASCADE, null=True)
     dispatch_status_id = models.ForeignKey('DispatchStatus', on_delete=models.CASCADE)
     repair_status = models.CharField(max_length=100)
     csr_id = models.ForeignKey('SystemUser',on_delete=models.CASCADE)
     company_id = models.ForeignKey('Company',on_delete=models.CASCADE)
     scheduled_date = models.DateField()
     is_scheduled = models.BooleanField()
-    invoice_id = models.ForeignKey('Invoices', on_delete=models.CASCADE)
-    payment_id = models.ForeignKey('Payments', on_delete=models.CASCADE, related_name='dispatch_entries_payment_id')
-    payment_status = models.ForeignKey('Payments', on_delete=models.CASCADE, related_name='dispatch_entries_payment_status')
+    # invoice_id = models.ForeignKey('Invoices', on_delete=models.CASCADE)
+    # payment_id = models.ForeignKey('Payments', on_delete=models.CASCADE, related_name='dispatch_entries_payment_id')
+    # payment_status = models.ForeignKey('Payments', on_delete=models.CASCADE, related_name='dispatch_entries_payment_status')
     pickup_location = models.CharField(max_length=100)
-    dropoff_location = models.CharField(max_length=100)
+    dropoff_location = models.CharField(max_length=100, null=True)
     eta = models.DateTimeField()
-    ata = models.DateTimeField()
+    ata = models.DateTimeField(null=True)
 
 class DispatchEntryAssets(models.Model):
     asset_id = models.AutoField(primary_key=True)
     customer_id = models.ForeignKey('Customers', on_delete=models.CASCADE)
-    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE)
-    colorid = models.CharField(max_length=100)
+    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE, null=True)
+    colorid = models.IntegerField()
     body_type_id = models.IntegerField()
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
@@ -121,7 +121,7 @@ class DispatchEntryAssets(models.Model):
     
 class DispatchEntryStatusRecords():
     id = models.AutoField(primary_key=True)
-    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE)
+    dispatch_entry_id = models.ForeignKey('DispatchEntry', on_delete=models.CASCADE, null=True)
     owner_user_id = models.IntegerField()
     previous_status_d=models.IntegerField()
     new_status_id = models.IntegerField()
@@ -131,7 +131,7 @@ class DispatchEntryStatusRecords():
     create_date = models.DateField(auto_now_add=True)
 
 class DispatchStatus(models.Model):
-    dispatch_status_id = models.AutoField(primary_key=True)
+    dispatch_status_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
 
 class DriverLocation(models.Model):

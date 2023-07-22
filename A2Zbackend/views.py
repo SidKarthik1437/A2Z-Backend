@@ -454,53 +454,41 @@ def dispatch_entry_status_records_detail(request, record_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 ## Dispatch Entry API
-@api_view(['GET'])
-def get_all_dispatch_entries(request):
-    dispatch_entries = DispatchEntry.objects.all()
-    serializer = DispatchEntrySerializer(dispatch_entries, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-def create_dispatch_entry(request):
-    serializer = DispatchEntrySerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-def get_dispatch_entry(request, entry_id):
-    try:
-        dispatch_entry = DispatchEntry.objects.get(dispatch_entry_id=entry_id)
-    except DispatchEntry.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = DispatchEntrySerializer(dispatch_entry)
-    return Response(serializer.data)
-
-
-@api_view(['PUT'])
-def update_dispatch_entry(request, entry_id):
-    try:
-        dispatch_entry = DispatchEntry.objects.get(dispatch_entry_id=entry_id)
-    except DispatchEntry.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = DispatchEntrySerializer(dispatch_entry, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+@api_view(['GET', 'POST'])
+def dispatch_entry_list(request):
+    if request.method == 'GET':
+        dispatch_entries = DispatchEntry.objects.all()
+        serializer = DispatchEntrySerializer(dispatch_entries, many=True)
         return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'POST':
+        serializer = DispatchEntrySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['DELETE'])
-def delete_dispatch_entry(request, entry_id):
+@api_view(['GET', 'PUT', 'DELETE'])
+def dispatch_entry_detail(request, entry_id):
     try:
         dispatch_entry = DispatchEntry.objects.get(dispatch_entry_id=entry_id)
     except DispatchEntry.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    dispatch_entry.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+
+    if request.method == 'GET':
+        serializer = DispatchEntrySerializer(dispatch_entry)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = DispatchEntrySerializer(dispatch_entry, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        dispatch_entry.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 ## DriverLocation API
 @api_view(['GET', 'POST'])

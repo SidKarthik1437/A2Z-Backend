@@ -24,28 +24,24 @@ dispatch-entries/
 dispatch-entries/<int:entry_id>/
 GET, POST,PUT,DELETE:
 {
-    case,
-    partner_caseid,
-    partner_service_id,
-    account_id,
-    source,
-    service_type_id,
+    dispatch_entry_id
+    partner_caseid
+    partner_service_id
+    repair_status
+    scheduled_date
+    is_scheduled
+    pickup_location
+    dropoff_location
+    eta
+    case_id
+    account_id
+    service_type_id
     reason_id,
-    customer_id,
-    asset_id,
-    dispatch_status_id,
-    repair_status,
-    csr_id,
-    company_id,
-    scheduled_date,
-    is_scheduled,
-    invoice_id,
-    payment_id,
-    payment_status
-    pickup_location,
-    dropoff_location,
-    eta,
-    ata,
+    customer_id
+    asset_id
+    dispatch_status_id
+    csr_id"
+    company_id
 }
 
 driver-locations/
