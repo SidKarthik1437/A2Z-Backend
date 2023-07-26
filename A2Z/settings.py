@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'A2Z.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'A2Z',
+        'NAME': 'Mechanic',
         'USER': 'postgres',
-        'PASSWORD': 'abc@123',
+        'PASSWORD': 'Polar45bear!@#',
         'HOST': 'localhost',
         'PORT': '5432',
     }

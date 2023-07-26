@@ -11,6 +11,11 @@ urlpatterns = [
     path('create-dispatch-entry/', views.create_dispatch_entry),
     
     #path('nearby-drivers/', nearby_drivers_api, name='nearby-drivers'),
+    path('mechanic/<int:id>/', views.mechanic_view, name='mechanic-view'),    
+    path('create-dispatch-entry/', views.create_dispatch_entry),
+
+    path('mech/', views.dispatch_view, name='dispatch-view'),
+    path('mech/<int:dispatchEntryid>/', views.dispatch_view, name='dispatch-view-with-id'),
     
     path('accounts/', views.accounts_list),
     path('accounts/<int:account_id>/', views.accounts_detail),

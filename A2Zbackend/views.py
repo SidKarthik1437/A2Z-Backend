@@ -10,6 +10,45 @@ from django.conf import settings
 from math import radians, sin, cos, sqrt, atan2
 
 
+def get_mechanic_by_id(id):
+    mechanic_data = {
+        1: {'name': 'John Doe', 'phone': '123-456-7890', 'address': '123 Main St'},
+        2: {'name': 'Jane Smith', 'phone': '987-654-3210', 'address': '456 Maple Ave'},
+        # Add more mechanic data entries as needed
+    }
+    return mechanic_data.get(id, None)
+
+def mechanic_view(request, id):
+    # Get the mechanic details for the given 'id'
+    mechanic_details = get_mechanic_by_id(id)
+    if mechanic_details is not None:
+        return JsonResponse(mechanic_details)
+    else:
+        return JsonResponse({'error': 'Mechanic not found'}, status=404)
+
+
+def get_dispatch_details_by_id(dispatchEntryid):
+    dispatch_entries = {
+        1: {'name': 'Dispatch 1', 'location': 'Location A', 'accept': True, 'reject': False, 'phone': '123-456-7890'},
+        2: {'name': 'Dispatch 2', 'location': 'Location B', 'accept': False, 'reject': True, 'phone': '987-654-3210'},
+    }
+    return dispatch_entries.get(dispatchEntryid, None)
+
+def dispatch_view(request, dispatchEntryid=None):
+    # Check if the 'dispatchEntryid' is assigned
+    if dispatchEntryid is not None:
+        # Get the details for the given 'dispatchEntryid'
+        dispatch_details = get_dispatch_details_by_id(dispatchEntryid)
+        if dispatch_details is not None:
+            return JsonResponse(dispatch_details)
+        else:
+            return JsonResponse({'error': 'Dispatch Entry not found'}, status=404)
+    else:
+        # If 'dispatchEntryid' is not assigned, return null
+        return JsonResponse(None, safe=False)
+
+
+
 @api_view(['POST'])
 def create_dispatch_entry(request):
     service_id = request.data.get('service', {}).get('serviceId')
