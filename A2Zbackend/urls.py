@@ -8,7 +8,7 @@ app_name = 'A2Zbackend'
 urlpatterns = [
     # path('create-customers/', views.create_customer),
     # path('create-service/', views.create_service),
-    # urls.py
+    
     path('mechanic/<int:id>/', views.mechanic_view, name='mechanic-view'),    
     path('create-dispatch-entry/', views.create_dispatch_entry),
 
